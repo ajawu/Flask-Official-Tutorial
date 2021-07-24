@@ -1,4 +1,4 @@
-from flaskr.db import Base
+from flaskr.auth.db import Base
 from sqlalchemy import Column, Integer, String, DateTime, Text, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
 import datetime

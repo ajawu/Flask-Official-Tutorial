@@ -1,6 +1,7 @@
 import os
 
-from flask import Flask
+from flask import Flask, jsonify
+from pydantic import ValidationError
 
 
 def create_app(test_config=None):
@@ -23,11 +24,16 @@ def create_app(test_config=None):
         pass
 
     # Register commands
-    from flaskr.db import init_db_command
+    from flaskr.auth.db import init_db_command
     app.cli.add_command(init_db_command)
 
     # Register Blueprints
-    from flaskr.auth import bp
+    from flaskr.auth.auth import bp
     app.register_blueprint(bp)
+
+    # Error Handlers
+    @app.errorhandler(ValidationError)
+    def handle_pydantic_validation_errors(e):
+        return jsonify(e.errors())
 
     return app

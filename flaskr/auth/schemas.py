@@ -3,13 +3,6 @@ from datetime import datetime
 from typing import List
 
 
-class PostSchema(BaseModel):
-    author_id: int
-    created: datetime
-    title: str
-    body: str
-
-
 class UserListSchema(BaseModel):
     id: int
     email: EmailStr
@@ -33,3 +26,9 @@ class UserRegisterSchema(BaseModel):
 class UserLoginSchema(BaseModel):
     email: EmailStr
     password: str
+
+
+class PasswordChangeSchema(BaseModel):
+    old_password: str
+    new_password: str
+    new_password_again: str

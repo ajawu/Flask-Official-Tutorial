@@ -16,7 +16,6 @@ Base.query = db_session.query_property()
 
 
 def init_db():
-    from flaskr import models
     Base.metadata.create_all(bind=engine)
 
 
