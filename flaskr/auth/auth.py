@@ -1,16 +1,18 @@
 import functools
 
-from flaskr.auth.db import db_session
-from flaskr.auth import schemas
-from flaskr.auth.models import UserModel
 import ujson
+import json
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-bp = Blueprint('auth', __name__, url_prefix='/auth', template_folder='templates', static_folder='static',
-               static_url_path='assets')
+from flaskr.auth import schemas
+from flaskr.auth.models import UserModel
+from flaskr.db import db_session
+
+auth_bp = Blueprint('auth', __name__, url_prefix='/auth', template_folder='templates', static_folder='static',
+                    static_url_path='assets')
 
 
 def register():
@@ -40,8 +42,8 @@ def login():
         if existing_user:
             if check_password_hash(existing_user.password, body.password):
                 session.clear()
-                session['user'] = ujson.dumps(existing_user.json())
-                return redirect(url_for('index'))
+                session['user'] = existing_user.json()
+                return redirect(url_for('blog.home'))
 
         flash('Invalid username or password')
     return render_template('auth/login.html')
@@ -49,7 +51,7 @@ def login():
 
 def logout():
     session.clear()
-    return redirect('auth.login')
+    return redirect(url_for('auth.login'))
 
 
 def change_password():
@@ -57,13 +59,23 @@ def change_password():
         body = schemas.PasswordChangeSchema(**request.form)
 
 
-@bp.before_app_request
+def profile():
+    return render_template('blog/index.html')
+
+
+def settings():
+    return render_template('blog/index.html')
+
+
+@auth_bp.before_app_request
 def logged_in_user():
-    user = session.get('user')
-    if user is None:
-        g.user = None
-    else:
-        g.user = ujson.loads(user)
+    if '/static/' not in request.path:
+        user = session.get('user')
+        if user is None:
+            g.user = None
+        else:
+            user_obj = ujson.loads(user)
+            g.user = user_obj
 
 
 def login_required(view):

@@ -1,0 +1,192 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+    <!-- site content
+        ================================================== -->
+    <div class="s-content content">
+        <main class="row content__page">
+
+            <article class="column large-full entry format-standard">
+
+                <div class="media-wrap entry__media">
+                    <div class="entry__post-thumb">
+                        <img src="{{ url_for('static', filename='blog/images/thumbs/single/standard/standard-1000.jpg') }}"
+                             srcset="{{ url_for('static', filename='blog/images/thumbs/single/standard/standard-2000.jpg') }} 2000w,
+                                     {{ url_for('static', filename='blog/images/thumbs/single/standard/standard-1000.jpg') }} 1000w,
+                                     {{ url_for('static', filename='blog/images/thumbs/single/standard/standard-500.jpg') }} 500w"
+                             sizes="(max-width: 2000px) 100vw, 2000px" alt="">
+                    </div>
+                </div>
+
+                <div class="content__page-header entry__header">
+                    <h1 class="display-1 entry__title">
+                        {{ post.title }}
+                    </h1>
+                    <ul class="entry__header-meta">
+                        <li class="author">
+                            By <a href="/author/?author_id={{ user.id }}">
+                            {{ user.first_name }} {{ user.last_name }}</a>
+                        </li>
+                        <li class="date">{{ post.created.date() }}</li>
+                        {# TODO: Create Post Tags #}
+{#                        <li class="cat-links">#}
+{#                            <a href="#0">Marketing</a><a href="#0">Management</a>#}
+{#                        </li>#}
+                    </ul>
+                </div> <!-- end entry__header -->
+
+                <div class="entry__content">
+
+                    <p class="lead drop-cap">
+                        {{ post.body | truncate(377) }}
+                    </p>
+
+                    <p>
+                        {{ post.body[202:] }}
+                    </p>
+                </div>
+
+                <div class="comments-wrap">
+
+                    <div id="comments" class="column large-12">
+
+                        <h3 class="h2">5 Comments</h3>
+
+                        <!-- START commentlist -->
+                        <ol class="commentlist">
+                            <li class="depth-1 comment">
+                                <div class="comment__avatar">
+                                    <img class="avatar"
+                                         src="{{ url_for('static', filename='blog/images/avatars/user-01.jpg') }}"
+                                         alt="" width="50" height="50">
+                                </div>
+
+                                <div class="comment__content">
+
+                                    <div class="comment__info">
+                                        <div class="comment__author">Itachi Uchiha</div>
+
+                                        <div class="comment__meta">
+                                            <div class="comment__time">April 30, 2019</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="comment__text">
+                                        <p>Adhuc quaerendum est ne, vis ut harum tantas noluisse, id suas iisque mei. Nec te
+                                            inani ponderum vulputate,
+                                            facilisi expetenda has et. Iudico dictas scriptorem an vim, ei alia mentitum
+                                            est, ne has voluptua praesent.</p>
+                                    </div>
+
+                                </div>
+                            </li>
+
+                            <li class="depth-1 comment">
+                                <div class="comment__avatar">
+                                    <img class="avatar"
+                                         src="{{ url_for('static', filename='blog/images/avatars/user-03.jpg') }}"
+                                         alt="" width="50" height="50">
+                                </div>
+
+                                <div class="comment__content">
+
+                                    <div class="comment__info">
+                                        <div class="comment__author">Naruto Uzumaki</div>
+
+                                        <div class="comment__meta">
+                                            <div class="comment__time">May 10, 2020</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="comment__text">
+                                        <p>
+                                            Adhuc quaerendum est ne, vis ut harum tantas noluisse, id suas iisque mei. Nec te
+                                            inani ponderum vulputate,
+                                            facilisi expetenda has et. Iudico dictas scriptorem an vim, ei alia mentitum
+                                            est, ne has voluptua praesent.
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </li>
+
+                            <li class="depth-1 comment">
+                                <div class="comment__avatar">
+                                    <img class="avatar"
+                                         src="{{ url_for('static', filename='blog/images/avatars/user-03.jpg') }}"
+                                         alt="" width="50" height="50">
+                                </div>
+
+                                <div class="comment__content">
+
+                                    <div class="comment__info">
+                                        <div class="comment__author">Itachi Uchiha</div>
+
+                                        <div class="comment__meta">
+                                            <div class="comment__time">June 12, 2021</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="comment__text">
+                                        <p>
+                                            Adhuc quaerendum est ne, vis ut harum tantas noluisse, id suas iisque mei. Nec te
+                                            inani ponderum vulputate,
+                                            facilisi expetenda has et. Iudico dictas scriptorem an vim, ei alia mentitum
+                                            est, ne has voluptua praesent.
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </li>
+                        </ol>
+                        <!-- END commentlist -->
+
+                    </div> <!-- end comments -->
+
+                    <div class="column large-12 comment-respond">
+
+                        <!-- START respond -->
+                        <div id="respond">
+
+                            <h3 class="h2">Add Comment <span>Your email address will not be published</span></h3>
+
+                            <form name="contactForm" id="contactForm" method="post" action="" autocomplete="off">
+                                <fieldset>
+
+                                    <div class="form-field">
+                                        <input name="cName" id="cName" class="full-width" placeholder="Your Name" value=""
+                                               type="text">
+                                    </div>
+
+                                    <div class="form-field">
+                                        <input name="cEmail" id="cEmail" class="full-width" placeholder="Your Email"
+                                               value="" type="text">
+                                    </div>
+
+                                    <div class="form-field">
+                                        <input name="cWebsite" id="cWebsite" class="full-width" placeholder="Website"
+                                               value="" type="text">
+                                    </div>
+
+                                    <div class="message form-field">
+                                        <textarea name="cMessage" id="cMessage" class="full-width"
+                                                  placeholder="Your Message"></textarea>
+                                    </div>
+
+                                    <input name="submit" id="submit" class="btn btn--primary btn-wide btn--large full-width"
+                                           value="Add Comment" type="submit">
+
+                                </fieldset>
+                            </form> <!-- end form -->
+
+                        </div>
+                        <!-- END respond-->
+
+                    </div> <!-- end comment-respond -->
+
+                </div>
+            </article><!-- end comments-wrap -->
+        </main>
+
+    </div> <!-- end s-content -->
+{% endblock %}

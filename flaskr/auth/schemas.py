@@ -32,3 +32,9 @@ class PasswordChangeSchema(BaseModel):
     old_password: str
     new_password: str
     new_password_again: str
+
+
+class UserDetailsSchema(BaseModel):
+    email: EmailStr
+    first_name: str
+    last_name: str

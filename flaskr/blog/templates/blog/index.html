@@ -1,0 +1,75 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+     <!-- site content
+    ================================================== -->
+    <div class="s-content">
+        <div class="masonry-wrap">
+
+            <div class="masonry">
+
+                <div class="grid-sizer"></div>
+
+                {% for post, user in posts %}
+                    <article class="masonry__brick entry format-standard animate-this">
+                        <div class="entry__thumb">
+                            <a href="single-standard.html" class="entry__thumb-link">
+                                <img src="{{ url_for('static', filename='blog/images/thumbs/masonry/woodcraft-600.jpg') }}"
+                                        srcset="{{ url_for('static', filename='blog/images/thumbs/masonry/woodcraft-600.jpg') }} 1x, {{ url_for('static', filename='blog/images/thumbs/masonry/woodcraft-1200.jpg') }} 2x" alt="">
+                            </a>
+                        </div>
+                        <div class="entry__text">
+                            <div class="entry__header">
+                                <h2 class="entry__title">
+                                    <a href={{ url_for('blog.post_details', post_id=post.id) }}>
+                                        {{ post.title }}
+                                    </a>
+                                </h2>
+                                <div class="entry__meta">
+                                    <span class="entry__meta-cat">
+                                        By
+                                        <a href="{{ url_for('blog.author_details', author_id=user.id) }}">
+                                            {{ user.first_name }} {{ user.last_name }}
+                                        </a>
+                                    </span>
+                                    <span class="entry__meta-date">
+                                        <a href="{{ url_for('blog.post_details', post_id=post.id) }}">
+                                            {{ post.created.date() }}
+                                        </a>
+                                    </span>
+                                </div>
+
+                            </div>
+                            <div class="entry__excerpt">
+                                <p>
+                                    {{ post.body|truncate(200) }}
+                                </p>
+                            </div>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div> <!-- end masonry -->
+
+        </div> <!-- end masonry-wrap -->
+
+{#  TODO: Enable pagination of posts  #}
+{#        <div class="row">#}
+{#            <div class="column large-full">#}
+{#                <nav class="pgn">#}
+{#                    <ul>#}
+{#                        <li><a class="pgn__prev" href="#0">Prev</a></li>#}
+{#                        <li><a class="pgn__num" href="#0">1</a></li>#}
+{#                        <li><span class="pgn__num current">2</span></li>#}
+{#                        <li><a class="pgn__num" href="#0">3</a></li>#}
+{#                        <li><a class="pgn__num" href="#0">4</a></li>#}
+{#                        <li><a class="pgn__num" href="#0">5</a></li>#}
+{#                        <li><span class="pgn__num dots">…</span></li>#}
+{#                        <li><a class="pgn__num" href="#0">8</a></li>#}
+{#                        <li><a class="pgn__next" href="#0">Next</a></li>#}
+{#                    </ul>#}
+{#                </nav>#}
+{#            </div>#}
+{#        </div>#}
+
+    </div> <!-- end s-content -->
+{% endblock %}

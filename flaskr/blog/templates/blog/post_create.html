@@ -1,0 +1,62 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+    <div class="s-content content">
+        <main class="row content__page">
+
+            <section class="column large-full entry format-standard">
+                <h3 class="h2" style="margin-bottom: 40px">Say Hello</h3>
+                {% for message in get_flashed_messages() %}
+                    <p class="flash-message" style="text-align: center; font-size: 22px">
+                        {{ message }}
+                    </p>
+                {% endfor %}
+                <form name="contactForm" id="contactForm" method="post" enctype="multipart/form-data">
+                    <fieldset>
+
+                        <div class="form-field">
+                            <input name="title" class="full-width" placeholder="Post Title" value="" type="text">
+                        </div>
+
+
+                        <div class="form-field">
+                            <p style="margin-bottom: 10px; color: rgb(121, 121, 121); font-size: 17px">
+                                Select hero image</p>
+                            <input name="hero-image-field" id="cHeroImage"
+                                   class="full-width" value="" type="file">
+                        </div>
+
+                        <div class="form-field">
+                            <p style="margin-bottom: 10px; color: rgb(121, 121, 121); font-size: 17px">
+                                Select item list image
+                            </p>
+                            <input name="list-image-field" id="cListImage"
+                                   class="full-width" value="" type="file">
+                        </div>
+
+                        <div class="message form-field">
+                            <textarea name="body" id="cMessage" class="full-width" placeholder="Your Post Body"></textarea>
+                        </div>
+
+                        <p style="margin-bottom: 10px; color: rgb(121, 121, 121); font-size: 17px">
+                            Select post categories:
+                        </p>
+                        {% for category in categories %}
+                            <label style="display: inline-block; margin-right: 30px;">
+                                <input name="categories" value="{{ category.id }}" type="checkbox">
+                                <span style="padding-left: 5px;">{{ category.name }}</span>
+                            </label>
+                        {% endfor %}
+
+                        <input name="submit" id="submit" style="margin-top: 40px"
+                               class="btn btn--primary btn-wide btn--large full-width"
+                               value="Upload Post" type="submit">
+                    </fieldset>
+                </form> <!-- end form -->
+
+            </section>
+
+        </main>
+
+        </div> <!-- end s-content -->
+{% endblock %}

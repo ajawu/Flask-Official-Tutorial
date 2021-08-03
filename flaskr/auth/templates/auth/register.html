@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Flaskr Login</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='auth/images/icons/favicon.ico') }}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='auth/vendor/bootstrap/css/bootstrap.min.css') }}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='auth/fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='auth/fonts/Linearicons-Free-v1.0.0/icon-font.min.css') }}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='auth/vendor/animate/animate.css') }}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='auth/vendor/css-hamburgers/hamburgers.min.css') }}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='auth/vendor/animsition/css/animsition.min.css') }}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='auth/vendor/select2/select2.min.css') }}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='auth/vendor/daterangepicker/daterangepicker.css') }}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='auth/css/util.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='auth/css/main.css') }}">
+<!--===============================================================================================-->
+</head>
+<body>
+
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55">
+				<form class="login100-form validate-form flex-sb flex-w flex-column" method="post">
+					<span class="login100-form-title p-b-20">
+						Account Login
+					</span>
+
+                    {% for message in get_flashed_messages() %}
+                        <p class="flash-message">{{ message }}</p>
+                    {% endfor %}
+                    <label for="id_email" class="txt1 p-b-11">First Name</label>
+					<div class="wrap-input100 validate-input m-b-36" data-validate = "Username is required">
+						<input class="input100" type="text" name="first_name" id="id_email" required>
+						<span class="focus-input100"></span>
+					</div>
+
+                    <label for="id_email" class="txt1 p-b-11">Last Name</label>
+					<div class="wrap-input100 validate-input m-b-36" data-validate = "Username is required">
+						<input class="input100" type="text" name="last_name" id="id_email" required>
+						<span class="focus-input100"></span>
+					</div>
+
+                    <label for="id_email" class="txt1 p-b-11">Email Address</label>
+					<div class="wrap-input100 validate-input m-b-36" data-validate = "Username is required">
+						<input class="input100" type="email" name="email" id="id_email" required>
+						<span class="focus-input100"></span>
+					</div>
+
+                    <label for="id_password" class="txt1 p-b-11">Password</label>
+					<div class="wrap-input100 validate-input m-b-12" data-validate = "Password is required">
+						<span class="btn-show-pass">
+							<i class="fa fa-eye"></i>
+						</span>
+						<input class="input100" type="password" name="password" id="id_password" required>
+						<span class="focus-input100"></span>
+					</div>
+
+					<div class="flex-sb-m w-full p-b-48">
+						<div>
+							<a href="{{ url_for('auth.login') }}" class="txt3">
+								I have an account. Login...
+							</a>
+						</div>
+					</div>
+
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn">
+							Register
+						</button>
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div id="dropDownSelect1"></div>
+<!--===============================================================================================-->
+    <script src="{{ url_for('static', filename='auth/vendor/jquery/jquery-3.2.1.min.js') }}"></script>
+<!--===============================================================================================-->
+    <script src="{{ url_for('static', filename='auth/vendor/animsition/js/animsition.min.js') }}"></script>
+<!--===============================================================================================-->
+    <script src="{{ url_for('static', filename='auth/vendor/bootstrap/js/popper.js') }}"></script>
+    <script src="{{ url_for('static', filename='auth/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+<!--===============================================================================================-->
+    <script src="{{ url_for('static', filename='auth/vendor/select2/select2.min.js') }}"></script>
+<!--===============================================================================================-->
+    <script src="{{ url_for('static', filename='auth/vendor/daterangepicker/moment.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='auth/vendor/daterangepicker/daterangepicker.js') }}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static', filename='auth/vendor/countdowntime/countdowntime.js') }}"></script>
+<!--===============================================================================================-->
+    <script src="{{ url_for('static', filename='auth/js/main.js') }}"></script>
+
+</body>
+</html>

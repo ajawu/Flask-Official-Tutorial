@@ -1,0 +1,41 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+    <div class="s-content content">
+        <main class="row content__page">
+
+            <section class="column large-full entry format-standard">
+                <h3 class="h2" style="margin-bottom: 40px">Say Hello</h3>
+                {% for message in get_flashed_messages() %}
+                    <p class="flash-message" style="text-align: center; font-size: 22px">
+                        {{ message }}
+                    </p>
+                {% endfor %}
+                <form name="contactForm" id="contactForm" method="post" action="" autocomplete="off">
+                    <fieldset>
+
+                        <div class="form-field">
+                            <input name="name" id="cName" class="full-width" placeholder="Your Name" value="" type="text">
+                        </div>
+
+                        <div class="form-field">
+                            <input name="email" id="cEmail" class="full-width" placeholder="Your Email" value="" type="text">
+                        </div>
+
+                        <div class="message form-field">
+                            <textarea name="message" id="cMessage" class="full-width" placeholder="Your Message"></textarea>
+                        </div>
+
+                        <input name="submit" id="submit" style="margin-top: 40px"
+                               class="btn btn--primary btn-wide btn--large full-width"
+                               value="Send Message" type="submit">
+
+                    </fieldset>
+                </form> <!-- end form -->
+
+            </section>
+
+        </main>
+
+        </div> <!-- end s-content -->
+{% endblock %}

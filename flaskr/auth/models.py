@@ -1,4 +1,4 @@
-from flaskr.auth.db import Base
+from flaskr.db import Base
 from sqlalchemy import Column, Integer, String, DateTime, Text, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
 import datetime
@@ -23,22 +23,4 @@ class UserModel(Base):
         self.last_name = last_name
 
     def __repr__(self):
-        return f'<User {self.name!r}>'
-
-
-class PostModel(Base):
-    __tablename__ = 'posts'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    author_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
-    created = Column(DateTime, nullable=False, default=datetime.datetime.utcnow)
-    title = Column(String(150), nullable=False)
-    body = Column(Text, nullable=False)
-
-    def __init__(self, author_id=None, created=None, title=None, body=None):
-        self.author_id = author_id
-        self.created = created
-        self.title = title
-        self.body = body
-
-    def __repr__(self):
-        return f'<Post {self.title!r}>'
+        return f'<User {self.first_name!r}>'
