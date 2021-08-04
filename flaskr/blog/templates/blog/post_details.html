@@ -10,11 +10,7 @@
 
                 <div class="media-wrap entry__media">
                     <div class="entry__post-thumb">
-                        <img src="{{ url_for('static', filename='blog/images/thumbs/single/standard/standard-1000.jpg') }}"
-                             srcset="{{ url_for('static', filename='blog/images/thumbs/single/standard/standard-2000.jpg') }} 2000w,
-                                     {{ url_for('static', filename='blog/images/thumbs/single/standard/standard-1000.jpg') }} 1000w,
-                                     {{ url_for('static', filename='blog/images/thumbs/single/standard/standard-500.jpg') }} 500w"
-                             sizes="(max-width: 2000px) 100vw, 2000px" alt="">
+                        <img src="{{ url_for('static', filename='media/posts/' + post.hero_image_url) }}">
                     </div>
                 </div>
 

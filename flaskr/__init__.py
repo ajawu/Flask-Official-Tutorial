@@ -7,7 +7,7 @@ from pydantic import ValidationError
 def create_app(test_config=None):
     # Create and configure app
     app = Flask(__name__, instance_relative_config=True)
-    upload_folder = 'flaskr/media/'
+    upload_folder = 'flaskr/static/media/'
 
     app.config.from_mapping(
         SECRET_KEY='development',

@@ -32,6 +32,7 @@ def home():
 
 def post_create():
     """Create new post"""
+    g.page = 'post_create'
     if request.method == 'POST':
         post_object = schemas.PostSchema(**request.form)
         # Process post image uploads
@@ -64,8 +65,9 @@ def post_create():
             db_session.commit()
             return redirect(url_for('blog.post_details', post_id=post.id))
 
-    categories = db_session.query(models.CategoryModel).all()
-    return render_template('blog/post_create.html', categories=categories, author_id=1)
+    elif request.method == 'GET':
+        categories = db_session.query(models.CategoryModel).all()
+        return render_template('blog/post_create.html', categories=categories)
 
 
 def post_details():
@@ -80,8 +82,51 @@ def post_update():
     """Update the details of post if user id matches post author id"""
     post_id = schemas.IdQuerySchema(id=request.args.get('post_id')).id
     if request.method == 'POST':
-        pass
-    return render_template('blog/contact.html')
+        post_object = schemas.PostSchema(**request.form)
+        post = db_session.query(models.PostModel).filter_by(id=post_id).first()
+        post_categories = [db_session.query(models.CategoryModel).filter_by(id=cat_id).first()
+                           for cat_id in request.form.getlist('categories')]
+
+        # Process post image uploads
+        hero_image, list_image = request.files.get('hero-image-field'), request.files.get('list-image-field')
+        if hero_image and list_image and utils.allowed_file([hero_image.filename, list_image.filename]):
+            # Delete previous images
+            try:
+                os.remove(f'{current_app.config["UPLOAD_FOLDER"]}posts/{post.hero_image_url}')
+            except OSError:
+                pass
+            try:
+                os.remove(f'{current_app.config["UPLOAD_FOLDER"]}posts/{post.list_image_url}')
+            except OSError:
+                pass
+
+            hero_image_filename = f'{uuid.uuid4().hex}.{list_image.filename.split(".")[-1]}'
+            list_image_filename = f'{uuid.uuid4().hex}.{list_image.filename.split(".")[-1]}'
+            hero_image.save(f'{current_app.config["UPLOAD_FOLDER"]}posts/{hero_image_filename}')
+            list_image.save(f'{current_app.config["UPLOAD_FOLDER"]}posts/{list_image_filename}')
+
+            db_session.query(models.PostModel).filter(models.PostModel.id == post_id).update({
+                'title': post_object.title,
+                'body': post_object.body,
+                'list_image_url': list_image_filename,
+                'hero_image_url': hero_image_filename,
+            })
+        else:
+            db_session.query(models.PostModel).filter(models.PostModel.id == post_id).update({
+                'title': post_object.title,
+                'body': post_object.body,
+            }, synchronize_session="fetch")
+        post.categories = post_categories
+        db_session.commit()
+        return redirect(url_for('blog.post_details', post_id=post_id))
+    elif request.method == 'GET':
+        author_id = ujson.loads(session.get('user'))['id']
+        post = db_session.query(models.PostModel).filter_by(id=post_id, author_id=author_id).first()
+        categories = db_session.query(models.CategoryModel).all()
+        if post:
+            return render_template('blog/post_update.html', categories=categories, post=post)
+        else:
+            abort(404, 'Post with matching id not found')
 
 
 def post_delete():
@@ -108,9 +153,12 @@ def post_by_categories():
                            posts=post_from_category)
 
 
-def me_details():
+def profile():
     """Details of current logged in user"""
-    return render_template('blog/author_posts.html')
+    g.page = 'profile'
+    author = ujson.loads(session.get('user'))
+    posts = db_session.query(models.PostModel).filter_by(author_id=author['id']).all()
+    return render_template('blog/profile.html', author=author, posts=posts)
 
 
 def contact():

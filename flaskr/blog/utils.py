@@ -2,6 +2,8 @@ def allowed_file(file_name_list: list) -> bool:
     """Return True if file extension of all passed file names is allowed"""
     allowed_extensions = {'png', 'jpg', 'jpeg', 'gif'}
     for file_name in file_name_list:
+        if not file_name:
+            return False
         if file_name.split('.')[-1].lower() not in allowed_extensions:
             return False
     return True

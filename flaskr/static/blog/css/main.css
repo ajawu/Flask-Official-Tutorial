@@ -3669,3 +3669,41 @@ body.search-is-visible {
     background-color: #343a40;
     text-decoration: none;
 }
+
+.post-btn:link,
+.post-btn:visited {
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 16px;
+    display: block;
+    text-align: center;
+    transition: all 0.3s;
+    padding: 10px 0;
+}
+
+.post-btn:hover,
+.post-btn:active {
+    color: #fff;
+    text-decoration: none;
+}
+
+.post-delete-btn:link,
+.post-delete-btn:visited {
+    background-color: #C60000;
+}
+
+.post-delete-btn:hover,
+.post-delete-btn:active {
+    background-color: #a40000;
+}
+
+.post-update-btn:link,
+.post-update-btn:visited {
+    background-color: #155878;
+}
+
+.post-update-btn:hover,
+.post-update-btn:active {
+    background-color: #10435b;
+}

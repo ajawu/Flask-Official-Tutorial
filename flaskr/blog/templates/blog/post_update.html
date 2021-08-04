@@ -5,7 +5,7 @@
         <main class="row content__page">
 
             <section class="column large-full entry format-standard">
-                <h3 class="h2" style="margin-bottom: 40px">Enter the details of your new post</h3>
+                <h3 class="h2" style="margin-bottom: 40px">Say Hello</h3>
                 {% for message in get_flashed_messages() %}
                     <p class="flash-message" style="text-align: center; font-size: 22px">
                         {{ message }}
@@ -15,7 +15,7 @@
                     <fieldset>
 
                         <div class="form-field">
-                            <input name="title" class="full-width" placeholder="Post Title" value="" type="text">
+                            <input name="title" class="full-width" placeholder="Post Title" value="{{ post.title }}" type="text">
                         </div>
 
 
@@ -35,22 +35,29 @@
                         </div>
 
                         <div class="message form-field">
-                            <textarea name="body" id="cMessage" class="full-width" placeholder="Your Post Body"></textarea>
+                            <textarea name="body" id="cMessage" class="full-width" placeholder="Your Post Body">{{ post.body }}</textarea>
                         </div>
 
                         <p style="margin-bottom: 10px; color: rgb(121, 121, 121); font-size: 17px">
                             Select post categories:
                         </p>
                         {% for category in categories %}
-                            <label style="display: inline-block; margin-right: 30px;">
-                                <input name="categories" value="{{ category.id }}" type="checkbox">
-                                <span style="padding-left: 5px;">{{ category.name }}</span>
-                            </label>
+                            {% if category in post.categories %}
+                                <label style="display: inline-block; margin-right: 30px;">
+                                    <input name="categories" value="{{ category.id }}" type="checkbox" checked>
+                                    <span style="padding-left: 5px;">{{ category.name }}</span>
+                                </label>
+                            {% else %}
+                                <label style="display: inline-block; margin-right: 30px;">
+                                    <input name="categories" value="{{ category.id }}" type="checkbox">
+                                    <span style="padding-left: 5px;">{{ category.name }}</span>
+                                </label>
+                            {% endif %}
                         {% endfor %}
 
                         <input name="submit" id="submit" style="margin-top: 40px"
                                class="btn btn--primary btn-wide btn--large full-width"
-                               value="Upload Post" type="submit">
+                               value="Update Post" type="submit">
                     </fieldset>
                 </form> <!-- end form -->
 
