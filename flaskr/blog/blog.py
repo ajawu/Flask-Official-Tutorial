@@ -26,8 +26,7 @@ def home():
     """List all posts for the blog home page"""
     g.page = 'home'
     posts = db_session.query(models.PostModel, auth_models.UserModel).join(auth_models.UserModel).all()
-    post_categories = db_session.query(models.CategoryModel).all()
-    return render_template('blog/index.html', posts=posts, categories=post_categories)
+    return render_template('blog/index.html', posts=posts)
 
 
 def post_create():
@@ -154,6 +153,17 @@ def post_by_categories():
         filter(models.PostModel.categories.any(models.CategoryModel.slug == category_slug)).all()
     return render_template('blog/post_by_category.html', category_name=category_slug,
                            posts=post_from_category)
+
+
+def search_post():
+    """Search for posts by name"""
+    search_keyword = request.args.get('keyword')
+    if search_keyword:
+        matching_posts = db_session.query(models.PostModel, auth_models.UserModel).join(auth_models.UserModel)\
+            .filter(models.PostModel.title.ilike(f'%{search_keyword}%')).all()
+        return render_template('blog/search_result.html', posts=matching_posts, keyword=search_keyword)
+    else:
+        return redirect(url_for('blog.home'))
 
 
 def profile():

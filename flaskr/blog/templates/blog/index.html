@@ -13,15 +13,15 @@
                 {% for post, user in posts %}
                     <article class="masonry__brick entry format-standard animate-this">
                         <div class="entry__thumb">
-                            <a href="single-standard.html" class="entry__thumb-link">
+                            <a href="{{ url_for('blog.post_details', post_id=post.id) }}" class="entry__thumb-link">
                                 <img src="{{ url_for('static', filename='media/posts/' + post.list_image_url) }}"
-                                     alt="">
+                                     alt="" style="height: 362px; width: 362px;">
                             </a>
                         </div>
                         <div class="entry__text">
                             <div class="entry__header">
                                 <h2 class="entry__title">
-                                    <a href={{ url_for('blog.post_details', post_id=post.id) }}>
+                                    <a href="{{ url_for('blog.post_details', post_id=post.id) }}">
                                         {{ post.title }}
                                     </a>
                                 </h2>

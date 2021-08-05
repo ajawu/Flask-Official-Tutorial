@@ -2,7 +2,8 @@ from flaskr.blog import blog
 
 blog.blog_bp.add_url_rule('/', view_func=blog.home, methods=('GET',))
 blog.blog_bp.add_url_rule('/contact/', view_func=blog.contact, methods=('GET', 'POST',))
-blog.blog_bp.add_url_rule('/author/', view_func=blog.author_details, methods=('GET',))
+blog.blog_bp.add_url_rule('/search/', view_func=blog.search_post, methods=('GET',))
+blog.blog_bp.add_url_rule('/author/', view_func=blog.author_details, methods=('GET',))  # GET param - author_id
 blog.blog_bp.add_url_rule('/post/create/', view_func=blog.post_create, methods=('GET', 'POST'))
 blog.blog_bp.add_url_rule('/post/view/', view_func=blog.post_details, methods=('GET',))
 blog.blog_bp.add_url_rule('/post/update/', view_func=blog.post_update, methods=('GET', 'POST'))
