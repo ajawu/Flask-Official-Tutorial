@@ -7,7 +7,7 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from flaskr.auth import schemas
+from flaskr.auth import schemas, decorators
 from flaskr.auth.models import UserModel
 from flaskr.db import db_session
 
@@ -33,6 +33,7 @@ def register():
 
 def login():
     if request.method == 'POST':
+        next_page = request.args.get('next')
         body = schemas.UserLoginSchema(**request.form)
         existing_user = schemas.UserListSchema.from_orm(
             db_session.query(UserModel).filter_by(email=body.email, is_active=True).first()
@@ -42,6 +43,8 @@ def login():
                 session.clear()
                 del existing_user.password
                 session['user'] = existing_user.json()
+                if next_page:
+                    return redirect(next_page)
                 return redirect(url_for('blog.home'))
 
         flash('Invalid username or password')
@@ -53,6 +56,7 @@ def logout():
     return redirect(url_for('auth.login'))
 
 
+@decorators.login_required
 def edit_profile():
     if request.method == 'POST':
         form_data = schemas.UserEditSchema(**request.form)
@@ -71,6 +75,7 @@ def edit_profile():
             return redirect(url_for('auth.account_settings'))
 
 
+@decorators.login_required
 def edit_password():
     if request.method == 'POST':
         user_id = ujson.loads(session.get('user', '{}')).get('id', None)
@@ -91,6 +96,7 @@ def edit_password():
             return redirect(url_for('auth.account_settings'))
 
 
+@decorators.login_required
 def account_settings():
     return render_template('auth/profile_edit.html')
 
@@ -104,25 +110,3 @@ def logged_in_user():
         else:
             user_obj = ujson.loads(user)
             g.user = user_obj
-
-
-def login_required(view):
-    functools.wraps(view)
-
-    def wrapped_view(**kwargs):
-        if g.user is None:
-            return redirect(url_for('auth.login'))
-
-        return view(**kwargs)
-    return wrapped_view
-
-
-def already_authenticated(view):
-    functools.wraps(view)
-
-    def wrapped_view(**kwargs):
-        if g.user:
-            return redirect(url_for('auth.login'))
-
-        return view(**kwargs)
-    return wrapped_view

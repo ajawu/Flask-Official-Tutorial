@@ -8,7 +8,7 @@ from flask import (
 )
 from werkzeug.utils import secure_filename
 
-from flaskr.auth import models as auth_models
+from flaskr.auth import models as auth_models, decorators
 from flaskr.blog import schemas, models
 from flaskr.blog import utils
 from flaskr.db import db_session
@@ -29,6 +29,7 @@ def home():
     return render_template('blog/index.html', posts=posts)
 
 
+@decorators.login_required
 def post_create():
     """Create new post"""
     g.page = 'post_create'
@@ -80,6 +81,7 @@ def post_details():
         abort(404, 'Post with matching id not found')
 
 
+@decorators.login_required
 def post_update():
     """Update the details of post if user id matches post author id"""
     post_id = schemas.IdQuerySchema(id=request.args.get('post_id')).id
@@ -122,8 +124,8 @@ def post_update():
         db_session.commit()
         return redirect(url_for('blog.post_details', post_id=post_id))
     elif request.method == 'GET':
-        author_id = ujson.loads(session.get('user'))['id']
-        post = db_session.query(models.PostModel).filter_by(id=post_id, author_id=author_id).first()
+        user_id = ujson.loads(session.get('user'))['id']
+        post = db_session.query(models.PostModel).filter_by(id=post_id, author_id=user_id).first()
         categories = db_session.query(models.CategoryModel).all()
         if post:
             return render_template('blog/post_update.html', categories=categories, post=post)
@@ -131,16 +133,13 @@ def post_update():
             abort(404, 'Post with matching id not found')
 
 
+@decorators.login_required
 def post_delete():
     """Delete post if post author id matches logged in user id"""
     post_id = schemas.IdQuerySchema(id=request.form.get('post_id')).id
-    post = db_session.query(models.PostModel).filter_by(id=post_id)
     user_id = ujson.loads(session.get('user', '{}')).get('id')
-    if post.author_id == user_id:
-        db_session.query(models.PostModel).filter_by(id=post_id).delete()
-    else:
-        return redirect(url_for('blog.home'))
-    return render_template('blog/contact.html')
+    db_session.query(models.PostModel).filter_by(id=post_id, author_id=user_id).delete()
+    return redirect(url_for('blog.profile'))
 
 
 def post_by_categories():
@@ -166,6 +165,7 @@ def search_post():
         return redirect(url_for('blog.home'))
 
 
+@decorators.login_required
 def profile():
     """Details of current logged in user"""
     g.page = 'profile'
