@@ -70,7 +70,7 @@
                         <a href="#0" class="{% if g.page == 'categories' %}sub-menu-is-open{% endif %}">Categories</a>
                         <ul class="sub-menu" style="{% if g.page == 'categories' %}display: block;{% endif %}">
                             {% for category in g.categories %}
-                                <li>
+                                <li class="{% if g.slug == category.slug %}current{% endif %}">
                                     <a href="{{ url_for('blog.post_by_categories', slug=category.slug) }}">
                                         {{ category.name }}
                                     </a>
@@ -83,14 +83,15 @@
                     </li>
                     {% if g.user %}
                         <li class="has-children user-links-box">
-                            <a href="#0" title="">Welcome {{ g.user.first_name }}!</a>
-                            <ul class="sub-menu">
-
-                                <li class="{% if g.page == 'profile' %}current{% endif %}">
+                            <a href="#0" class="{% if g.page == 'personal' %}sub-menu-is-open{% endif %}">
+                                Welcome {{ g.user.first_name }}!
+                            </a>
+                            <ul class="sub-menu" style="{% if g.page == 'personal' %}display: block;{% endif %}">
+                                <li class="{% if g.person_page == 'profile' %}current{% endif %}">
                                     <a href="{{ url_for('blog.profile') }}">Profile</a>
                                 </li>
 
-                                <li class="{% if g.page == 'post_create' %}current{% endif %}">
+                                <li class="{% if g.person_page == 'post_create' %}current{% endif %}">
                                     <a href="{{ url_for('blog.post_create') }}" title="">New Post</a>
                                 </li>
 

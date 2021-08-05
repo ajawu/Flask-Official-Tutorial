@@ -55,9 +55,8 @@
                     <article class="masonry__brick entry format-standard animate-this">
                         <div class="entry__thumb">
                             <a href="{{ url_for('blog.post_details', post_id=post.id) }}" class="entry__thumb-link">
-                                <img src="{{ url_for('static', filename='blog/images/thumbs/masonry/woodcraft-600.jpg') }}"
-                                        srcset="{{ url_for('static', filename='blog/images/thumbs/masonry/woodcraft-600.jpg') }} 1x, {{ url_for('static', filename='blog/images/thumbs/masonry/woodcraft-1200.jpg') }} 2x"
-                                     alt="post-main-picture" style="width: 363px; height: 363px">
+                                <img src="{{ url_for('static', filename='media/posts/' + post.list_image_url) }}"
+                                     alt="post-list-image" style="height: 362px; width: 362px;">
                             </a>
                         </div>
                         <div class="entry__text">
@@ -83,9 +82,7 @@
 
                             </div>
                             <div class="entry__excerpt">
-                                <p>
-                                    {{ post.body|truncate(200) }}
-                                </p>
+                                {{ post.body|truncate(200)|safe }}
                             </div>
                             <div style="margin-top: 20px">
                                 <a href="{{ url_for('blog.post_update', post_id=post.id) }}"

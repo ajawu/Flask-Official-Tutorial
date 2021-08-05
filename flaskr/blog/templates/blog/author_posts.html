@@ -79,9 +79,7 @@
 
                         </div>
                         <div class="entry__excerpt">
-                            <p>
-                                {{ post.body|truncate(200) }}
-                            </p>
+                            {{ post.body|truncate(200)|safe }}
                         </div>
                     </div>
                 </article>

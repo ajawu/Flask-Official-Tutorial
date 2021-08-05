@@ -6,7 +6,6 @@ import ujson
 from flask import (
     Blueprint, flash, g, render_template, request, session, redirect, url_for, abort, current_app
 )
-from werkzeug.utils import secure_filename
 
 from flaskr.auth import models as auth_models, decorators
 from flaskr.blog import schemas, models
@@ -32,7 +31,8 @@ def home():
 @decorators.login_required
 def post_create():
     """Create new post"""
-    g.page = 'post_create'
+    g.page = 'personal'
+    g.person_page = 'post_create'
     if request.method == 'POST':
         post_object = schemas.PostSchema(**request.form)
         # Process post image uploads
@@ -112,14 +112,14 @@ def post_update():
 
             db_session.query(models.PostModel).filter(models.PostModel.id == post_id).update({
                 'title': post_object.title,
-                'body': post_object.body,
+                'body': post_object.ckeditor,
                 'list_image_url': list_image_filename,
                 'hero_image_url': hero_image_filename,
             })
         else:
             db_session.query(models.PostModel).filter(models.PostModel.id == post_id).update({
                 'title': post_object.title,
-                'body': post_object.body,
+                'body': post_object.ckeditor,
             })
         post.categories = post_categories
         db_session.commit()
@@ -145,8 +145,9 @@ def post_delete():
 
 def post_by_categories():
     """List posts in category with matching slug"""
-    g.page = 'categories'
     category_slug = request.args.get('slug')
+    g.page = 'categories'
+    g.slug = category_slug
     # post_from_category = db_session.query(models.PostModel). \
     #     filter(models.PostModel.categories.any(models.CategoryModel.slug == category_slug)).all()
     post_from_category = db_session.query(models.PostModel, auth_models.UserModel).join(auth_models.UserModel). \
@@ -169,7 +170,8 @@ def search_post():
 @decorators.login_required
 def profile():
     """Details of current logged in user"""
-    g.page = 'profile'
+    g.page = 'personal'
+    g.person_page = 'profile'
     author = ujson.loads(session.get('user'))
     posts = db_session.query(models.PostModel).filter_by(author_id=author['id']).all()
     return render_template('blog/profile.html', author=author, posts=posts)

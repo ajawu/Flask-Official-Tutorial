@@ -1,5 +1,9 @@
 {% extends "blog/base.html" %}
 
+{% block style %}
+    {{ ckeditor.load() }}
+{% endblock %}
+
 {% block content %}
     <div class="s-content content">
         <main class="row content__page">
@@ -35,7 +39,8 @@
                         </div>
 
                         <div class="message form-field">
-                            <textarea name="body" id="cMessage" class="full-width" placeholder="Your Post Body">{{ post.body }}</textarea>
+                            {{ ckeditor.create(value=post.body) }}
+{#                            <textarea name="body" id="cMessage" class="full-width" placeholder="Your Post Body">{{ post.body }}</textarea>#}
                         </div>
 
                         <p style="margin-bottom: 10px; color: rgb(121, 121, 121); font-size: 17px">
