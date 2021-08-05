@@ -76,7 +76,8 @@ def post_details():
     post_author = db_session.query(models.PostModel, auth_models.UserModel).join(auth_models.UserModel).filter(
         models.PostModel.id == post_id).first()
     if post_author:
-        return render_template('blog/post_details.html', post=post_author[0], user=post_author[1])
+        comments = db_session.query(models.CommentModel).filter_by(post_id=post_id).all()
+        return render_template('blog/post_details.html', post=post_author[0], user=post_author[1], comments=comments)
     else:
         abort(404, 'Post with matching id not found')
 
@@ -198,3 +199,17 @@ def author_details():
         return render_template('blog/author_posts.html', posts=posts, author=author)
     else:
         abort(404, 'Author with matching id not found')
+
+
+def add_comment():
+    """Add new comment to post"""
+    comment_schema = schemas.CommentSchema(**request.form)
+    comment = models.CommentModel(
+        name=comment_schema.name,
+        email=comment_schema.email,
+        comment=comment_schema.comment,
+        post_id=comment_schema.post_id
+    )
+    db_session.add(comment)
+    db_session.commit()
+    return redirect(url_for('blog.post_details', post_id=comment_schema.post_id))

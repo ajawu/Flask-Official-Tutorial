@@ -23,9 +23,8 @@ class ContactModel(Base):
 
 
 association_table = Table('association', Base.metadata,
-    Column('post_id', ForeignKey('post.id'), primary_key=True),
-    Column('category_id', ForeignKey('category.id'), primary_key=True)
-)
+                          Column('post_id', ForeignKey('post.id'), primary_key=True),
+                          Column('category_id', ForeignKey('category.id'), primary_key=True))
 
 
 class PostModel(Base):
@@ -37,6 +36,7 @@ class PostModel(Base):
     hero_image_url = Column(String, nullable=True)
     list_image_url = Column(String, nullable=False)
     body = Column(Text, nullable=False)
+    comments = relationship('CommentModel')
     categories = relationship(
         "CategoryModel",
         secondary=association_table,
@@ -72,3 +72,19 @@ class CategoryModel(Base):
 
     def __repr__(self):
         return f'<Category - {self.slug}>'
+
+
+class CommentModel(Base):
+    __tablename__ = 'comment'
+    id = Column(Integer, autoincrement=True, primary_key=True)
+    name = Column(String, nullable=False)
+    email = Column(String, nullable=False)
+    comment = Column(String, nullable=False)
+    creation_date = Column(DateTime, nullable=False, default=datetime.datetime.utcnow)
+    post_id = Column(Integer, ForeignKey('post.id'), nullable=False)
+
+    def __init__(self, name, email, comment, post_id):
+        self.name = name
+        self.email = email
+        self.comment = comment
+        self.post_id = post_id

@@ -41,99 +41,42 @@
                         {{ post.body[202:] }}
                     </p>
                 </div>
-
-                <div class="comments-wrap">
+            </article><!-- end comments-wrap -->
+            <div class="comments-wrap" style="margin-top: 50px">
 
                     <div id="comments" class="column large-12">
 
-                        <h3 class="h2">5 Comments</h3>
+                        <h3 class="h2">{{ comments|length }} Comments</h3>
 
                         <!-- START commentlist -->
                         <ol class="commentlist">
-                            <li class="depth-1 comment">
+                            {% for comment in comments %}
+                                <li class="depth-1 comment">
                                 <div class="comment__avatar">
                                     <img class="avatar"
-                                         src="{{ url_for('static', filename='blog/images/avatars/user-01.jpg') }}"
+                                         src="{{ url_for('static', filename='blog/images/default_avatar.png') }}"
                                          alt="" width="50" height="50">
                                 </div>
 
                                 <div class="comment__content">
 
                                     <div class="comment__info">
-                                        <div class="comment__author">Itachi Uchiha</div>
+                                        <div class="comment__author">{{ comment.name }}</div>
 
                                         <div class="comment__meta">
-                                            <div class="comment__time">April 30, 2019</div>
+                                            <div class="comment__time">{{ comment.creation_date.strftime("%B %d, %Y") }}</div>
                                         </div>
                                     </div>
 
                                     <div class="comment__text">
-                                        <p>Adhuc quaerendum est ne, vis ut harum tantas noluisse, id suas iisque mei. Nec te
-                                            inani ponderum vulputate,
-                                            facilisi expetenda has et. Iudico dictas scriptorem an vim, ei alia mentitum
-                                            est, ne has voluptua praesent.</p>
-                                    </div>
-
-                                </div>
-                            </li>
-
-                            <li class="depth-1 comment">
-                                <div class="comment__avatar">
-                                    <img class="avatar"
-                                         src="{{ url_for('static', filename='blog/images/avatars/user-03.jpg') }}"
-                                         alt="" width="50" height="50">
-                                </div>
-
-                                <div class="comment__content">
-
-                                    <div class="comment__info">
-                                        <div class="comment__author">Naruto Uzumaki</div>
-
-                                        <div class="comment__meta">
-                                            <div class="comment__time">May 10, 2020</div>
-                                        </div>
-                                    </div>
-
-                                    <div class="comment__text">
-                                        <p>
-                                            Adhuc quaerendum est ne, vis ut harum tantas noluisse, id suas iisque mei. Nec te
-                                            inani ponderum vulputate,
-                                            facilisi expetenda has et. Iudico dictas scriptorem an vim, ei alia mentitum
-                                            est, ne has voluptua praesent.
+                                        <p style="width: 564px">
+                                            {{ comment.comment }}
                                         </p>
                                     </div>
 
                                 </div>
                             </li>
-
-                            <li class="depth-1 comment">
-                                <div class="comment__avatar">
-                                    <img class="avatar"
-                                         src="{{ url_for('static', filename='blog/images/avatars/user-03.jpg') }}"
-                                         alt="" width="50" height="50">
-                                </div>
-
-                                <div class="comment__content">
-
-                                    <div class="comment__info">
-                                        <div class="comment__author">Itachi Uchiha</div>
-
-                                        <div class="comment__meta">
-                                            <div class="comment__time">June 12, 2021</div>
-                                        </div>
-                                    </div>
-
-                                    <div class="comment__text">
-                                        <p>
-                                            Adhuc quaerendum est ne, vis ut harum tantas noluisse, id suas iisque mei. Nec te
-                                            inani ponderum vulputate,
-                                            facilisi expetenda has et. Iudico dictas scriptorem an vim, ei alia mentitum
-                                            est, ne has voluptua praesent.
-                                        </p>
-                                    </div>
-
-                                </div>
-                            </li>
+                            {% endfor %}
                         </ol>
                         <!-- END commentlist -->
 
@@ -146,31 +89,27 @@
 
                             <h3 class="h2">Add Comment <span>Your email address will not be published</span></h3>
 
-                            <form name="contactForm" id="contactForm" method="post" action="" autocomplete="off">
+                            <form name="contactForm" id="contactForm" method="post"
+                                  action="{{ url_for('blog.add_comment') }}">
                                 <fieldset>
-
+                                    <input type="hidden" name="post_id" value="{{ post.id }}">
                                     <div class="form-field">
-                                        <input name="cName" id="cName" class="full-width" placeholder="Your Name" value=""
-                                               type="text">
+                                        <input name="name" id="cName" class="full-width" placeholder="Display Name"
+                                               type="text" required>
                                     </div>
 
                                     <div class="form-field">
-                                        <input name="cEmail" id="cEmail" class="full-width" placeholder="Your Email"
-                                               value="" type="text">
-                                    </div>
-
-                                    <div class="form-field">
-                                        <input name="cWebsite" id="cWebsite" class="full-width" placeholder="Website"
-                                               value="" type="text">
+                                        <input name="email" id="cEmail" class="full-width" placeholder="Your Email"
+                                               value="" type="text" required>
                                     </div>
 
                                     <div class="message form-field">
-                                        <textarea name="cMessage" id="cMessage" class="full-width"
-                                                  placeholder="Your Message"></textarea>
+                                        <textarea name="comment" id="cComment" class="full-width"
+                                                  placeholder="Your Comment"></textarea>
                                     </div>
 
-                                    <input name="submit" id="submit" class="btn btn--primary btn-wide btn--large full-width"
-                                           value="Add Comment" type="submit">
+                                    <input name="submit" id="submit" value="Add Comment"
+                                           class="btn btn--primary btn-wide btn--large full-width" type="submit">
 
                                 </fieldset>
                             </form> <!-- end form -->
@@ -181,7 +120,6 @@
                     </div> <!-- end comment-respond -->
 
                 </div>
-            </article><!-- end comments-wrap -->
         </main>
 
     </div> <!-- end s-content -->

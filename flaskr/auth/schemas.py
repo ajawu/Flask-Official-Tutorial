@@ -10,7 +10,6 @@ class UserListSchema(BaseModel):
     last_name: str
     is_admin: bool
     is_verified: bool
-    password: str
 
     class Config:
         orm_mode = True

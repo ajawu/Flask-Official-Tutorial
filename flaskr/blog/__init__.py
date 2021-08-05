@@ -10,3 +10,4 @@ blog.blog_bp.add_url_rule('/post/update/', view_func=blog.post_update, methods=(
 blog.blog_bp.add_url_rule('/post/delete/', view_func=blog.post_delete, methods=('GET',))
 blog.blog_bp.add_url_rule('/category/', view_func=blog.post_by_categories, methods=('GET',))
 blog.blog_bp.add_url_rule('/me/', view_func=blog.profile, methods=('GET',))
+blog.blog_bp.add_url_rule('/add-comment/', view_func=blog.add_comment, methods=('POST',))

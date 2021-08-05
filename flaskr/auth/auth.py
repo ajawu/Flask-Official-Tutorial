@@ -35,14 +35,12 @@ def login():
     if request.method == 'POST':
         next_page = request.args.get('next')
         body = schemas.UserLoginSchema(**request.form)
-        existing_user = schemas.UserListSchema.from_orm(
-            db_session.query(UserModel).filter_by(email=body.email, is_active=True).first()
-        )
+        existing_user = db_session.query(UserModel).filter_by(email=body.email, is_active=True).first()
         if existing_user:
             if check_password_hash(existing_user.password, body.password):
                 session.clear()
                 del existing_user.password
-                session['user'] = existing_user.json()
+                session['user'] = schemas.UserListSchema.from_orm(existing_user).json()
                 if next_page:
                     return redirect(next_page)
                 return redirect(url_for('blog.home'))
@@ -70,7 +68,6 @@ def edit_profile():
             db_session.commit()
             updated_user = schemas.UserListSchema.from_orm(db_session.query(UserModel).
                                                            filter(UserModel.id == user_id).first())
-            del updated_user.password
             session['user'] = updated_user.json()
             return redirect(url_for('auth.account_settings'))
 

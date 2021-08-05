@@ -1,6 +1,4 @@
 from pydantic import BaseModel, EmailStr
-import datetime
-from flaskr.auth.schemas import UserDetailsSchema
 
 
 class ContactSchema(BaseModel):
@@ -16,3 +14,10 @@ class PostSchema(BaseModel):
 
 class IdQuerySchema(BaseModel):
     id: int
+
+
+class CommentSchema(BaseModel):
+    name: str
+    email: EmailStr
+    comment: str
+    post_id: int
