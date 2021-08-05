@@ -44,6 +44,9 @@ flask init-db
 flask run
 ```
 
+## Acknowledgment
+Design based on **Typerite by Styleshout** which can be found [here](https://www.styleshout.com/free-templates/typerite/)
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
