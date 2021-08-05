@@ -2,6 +2,9 @@ import os
 
 from flask import Flask, jsonify
 from pydantic import ValidationError
+from flask_ckeditor import CKEditor
+
+ckeditor = CKEditor()
 
 
 def create_app(test_config=None):
@@ -20,6 +23,7 @@ def create_app(test_config=None):
         app.config.from_mapping(test_config)
 
     app.config['UPLOAD_FOLDER'] = upload_folder
+    ckeditor.init_app(app)
 
     # ensure the instance folder exists
     try:

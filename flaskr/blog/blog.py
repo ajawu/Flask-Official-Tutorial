@@ -58,7 +58,7 @@ def post_create():
                 title=post_object.title,
                 list_image_url=list_image_file_name,
                 hero_image_url=hero_image_filename,
-                body=post_object.body,
+                body=post_object.ckeditor,
             )
             post.categories = post_categories
             db_session.add(post)

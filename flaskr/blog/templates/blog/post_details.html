@@ -32,17 +32,14 @@
                 </div> <!-- end entry__header -->
 
                 <div class="entry__content">
+                    {{ post.body|safe }}
+{#                    <p class="lead drop-cap">#}
+{#                        {{ post.body | truncate(377) }}#}
+{#                    </p>#}
 
-                    <p class="lead drop-cap">
-                        {{ post.body | truncate(377) }}
-                    </p>
-
-                    <p>
-                        {{ post.body[202:] }}
-                    </p>
                 </div>
             </article><!-- end comments-wrap -->
-            <div class="comments-wrap" style="margin-top: 50px">
+            <div class="comments-wrap" style="margin: 50px auto 0">
 
                     <div id="comments" class="column large-12">
 

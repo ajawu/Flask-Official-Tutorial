@@ -12,6 +12,8 @@ Flask-SQLAlchemy = "2.5.1"
 ujson = "4.0.2"
 pydantic = "^1.8.2"
 python-slugify = "^5.0.2"
+Flask-CKEditor = "^0.4.6"
+WTForms = "^2.3.3"
 
 [tool.poetry.dev-dependencies]
 

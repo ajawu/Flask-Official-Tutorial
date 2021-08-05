@@ -9,7 +9,7 @@ class ContactSchema(BaseModel):
 
 class PostSchema(BaseModel):
     title: str
-    body: str
+    ckeditor: str
 
 
 class IdQuerySchema(BaseModel):
