@@ -73,9 +73,12 @@ def post_create():
 def post_details():
     """View Details of a post with matching post id"""
     post_id = schemas.IdQuerySchema(id=request.args.get('post_id')).id
-    post_author = db_session.query(models.PostModel, auth_models.UserModel).join(auth_models.UserModel).filter_by(
-        id=post_id).first()
-    return render_template('blog/post_details.html', post=post_author[0], user=post_author[1])
+    post_author = db_session.query(models.PostModel, auth_models.UserModel).join(auth_models.UserModel).filter(
+        models.PostModel.id == post_id).first()
+    if post_author:
+        return render_template('blog/post_details.html', post=post_author[0], user=post_author[1])
+    else:
+        abort(404, 'Post with matching id not found')
 
 
 def post_update():
@@ -115,7 +118,7 @@ def post_update():
             db_session.query(models.PostModel).filter(models.PostModel.id == post_id).update({
                 'title': post_object.title,
                 'body': post_object.body,
-            }, synchronize_session="fetch")
+            })
         post.categories = post_categories
         db_session.commit()
         return redirect(url_for('blog.post_details', post_id=post_id))

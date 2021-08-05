@@ -15,7 +15,9 @@
                         <div class="profile mr-3 text-center" style="position: absolute; bottom: -50px; z-index: 100">
                             <img src="{{ url_for('static', filename='blog/images/default_avatar.png') }}"
                                  alt="..." width="130" class="rounded mb-2 img-thumbnail d-inline-block">
-                            <a href="#" class="edit-profile-btn rounded">Edit profile</a>
+                            <a href="{{ url_for('auth.account_settings') }}" class="edit-profile-btn rounded">
+                                Edit profile
+                            </a>
                         </div>
                     </div>
                     <div class="col-lg-10 col-md-9 p-0 d-flex align-items-center" style="position: relative">

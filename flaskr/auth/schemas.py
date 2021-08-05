@@ -38,3 +38,9 @@ class UserDetailsSchema(BaseModel):
     email: EmailStr
     first_name: str
     last_name: str
+
+
+class UserEditSchema(BaseModel):
+    email: EmailStr
+    first_name: str
+    last_name: str

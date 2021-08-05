@@ -35,13 +35,12 @@ def login():
     if request.method == 'POST':
         body = schemas.UserLoginSchema(**request.form)
         existing_user = schemas.UserListSchema.from_orm(
-            db_session.query(UserModel.id, UserModel.email, UserModel.first_name, UserModel.last_name,
-                             UserModel.is_admin, UserModel.is_verified, UserModel.password)
-            .filter_by(email=body.email, is_active=True).first()
+            db_session.query(UserModel).filter_by(email=body.email, is_active=True).first()
         )
         if existing_user:
             if check_password_hash(existing_user.password, body.password):
                 session.clear()
+                del existing_user.password
                 session['user'] = existing_user.json()
                 return redirect(url_for('blog.home'))
 
@@ -54,17 +53,46 @@ def logout():
     return redirect(url_for('auth.login'))
 
 
-def change_password():
+def edit_profile():
     if request.method == 'POST':
+        form_data = schemas.UserEditSchema(**request.form)
+        user_id = ujson.loads(session.get('user', '{}')).get('id', None)
+        if user_id:
+            db_session.query(UserModel).filter(UserModel.id == user_id).update({
+                'first_name': form_data.first_name,
+                'last_name': form_data.last_name,
+                'email': form_data.email,
+            })
+            db_session.commit()
+            updated_user = schemas.UserListSchema.from_orm(db_session.query(UserModel).
+                                                           filter(UserModel.id == user_id).first())
+            del updated_user.password
+            session['user'] = updated_user.json()
+            return redirect(url_for('auth.account_settings'))
+
+
+def edit_password():
+    if request.method == 'POST':
+        user_id = ujson.loads(session.get('user', '{}')).get('id', None)
         body = schemas.PasswordChangeSchema(**request.form)
+        old_password = db_session.query(UserModel.password).filter_by(id=user_id).first()
+
+        if check_password_hash(old_password[0], body.old_password):
+            if body.new_password == body.new_password_again:
+                new_password = generate_password_hash(body.new_password)
+                db_session.query(UserModel).filter(UserModel.id == user_id).update({
+                    'password': new_password
+                })
+                db_session.commit()
+                flash('Password updated successfully')
+                return redirect(url_for('auth.account_settings'))
+        else:
+            flash('Enter valid current password')
+            return redirect(url_for('auth.account_settings'))
 
 
-def profile():
-    return render_template('blog/index.html')
-
-
-def settings():
-    return render_template('blog/index.html')
+def account_settings():
+    return render_template('auth/profile_edit.html')
 
 
 @auth_bp.before_app_request

@@ -7,89 +7,89 @@
 {% endblock %}
 
 {% block content %}
-    <div class="s-content">
-        <div class="row mb-5 shadow rounded" style="max-width: 100%; width: 100%;">
-            <div class="col-12">
-                <div class="bg-transparent row mx-auto cover">
-                    <div class="col-lg-2 col-md-3 d-flex justify-content-center" style="position: relative">
-                        <div class="profile mr-3 text-center" style="position: absolute; bottom: -35px; z-index: 100">
-                            <img src="{{ url_for('static', filename='blog/images/default_avatar.png') }}"
-                                 alt="profile-avatar" width="130" class="rounded mb-2 img-thumbnail d-inline-block">
-                        </div>
+<div class="s-content">
+    <div class="row mb-5 shadow rounded" style="max-width: 100%; width: 100%;">
+        <div class="col-12">
+            <div class="bg-transparent row mx-auto cover">
+                <div class="col-lg-2 col-md-3 d-flex justify-content-center" style="position: relative">
+                    <div class="profile mr-3 text-center" style="position: absolute; bottom: -35px; z-index: 100">
+                        <img src="{{ url_for('static', filename='blog/images/default_avatar.png') }}"
+                             alt="profile-avatar" width="130" class="rounded mb-2 img-thumbnail d-inline-block">
                     </div>
-                    <div class="col-lg-10 col-md-9 p-0 d-flex align-items-center" style="position: relative">
-                        <div class="media-body text-white" style="position: absolute; bottom: 25px; left: -25px; z-index: 100">
-                            <h2 class="mb-1">{{ author.first_name }} {{ author.last_name }}</h2>
-                            <h5 class="mb-0">
-                                {{ author.email }}
-                            </h5>
-                        </div>
+                </div>
+                <div class="col-lg-10 col-md-9 p-0 d-flex align-items-center" style="position: relative">
+                    <div class="media-body text-white" style="position: absolute; bottom: 25px; left: -25px; z-index: 100">
+                        <h2 class="mb-1">{{ author.first_name }} {{ author.last_name }}</h2>
+                        <h5 class="mb-0">
+                            {{ author.email }}
+                        </h5>
                     </div>
                 </div>
             </div>
-            <div class="col-12">
-                <div class="bg-light p-4 d-flex justify-content-end text-center">
-                        <ul class="list-inline mb-0">
-                            <li class="list-inline-item">
-                                <h3 class="font-weight-bold mb-0 d-block">{{ posts|length }}</h3>
-                                <p class="text-muted"> <i class="fas fa-image mr-1"></i>Posts</p>
-                            </li>
-                            <li class="list-inline-item">
-                                <h3 class="font-weight-bold mb-0 d-block">745</h3>
-                                <p class="text-muted"> <i class="fas fa-user mr-1"></i>Post Views</p>
-                            </li>
-                        </ul>
-                    </div>
-            </div>
         </div>
-        <div class="masonry-wrap">
+        <div class="col-12">
+            <div class="bg-light p-4 d-flex justify-content-end text-center">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item">
+                            <h3 class="font-weight-bold mb-0 d-block">{{ posts|length }}</h3>
+                            <p class="text-muted"> <i class="fas fa-image mr-1"></i>Posts</p>
+                        </li>
+                        <li class="list-inline-item">
+                            <h3 class="font-weight-bold mb-0 d-block">745</h3>
+                            <p class="text-muted"> <i class="fas fa-user mr-1"></i>Post Views</p>
+                        </li>
+                    </ul>
+                </div>
+        </div>
+    </div>
+    <div class="masonry-wrap">
 
-            <div class="masonry">
+        <div class="masonry">
 
-                <div class="grid-sizer"></div>
+            <div class="grid-sizer"></div>
 
-                {% for post in posts %}
-                    <article class="masonry__brick entry format-standard animate-this">
-                        <div class="entry__thumb">
-                            <a href="single-standard.html" class="entry__thumb-link">
-                                <img src="{{ url_for('static', filename='blog/images/thumbs/masonry/woodcraft-600.jpg') }}"
-                                        srcset="{{ url_for('static', filename='blog/images/thumbs/masonry/woodcraft-600.jpg') }} 1x, {{ url_for('static', filename='blog/images/thumbs/masonry/woodcraft-1200.jpg') }} 2x"
-                                     alt="post-main-picture" style="width: 363px; height: 363px">
-                            </a>
-                        </div>
-                        <div class="entry__text">
-                            <div class="entry__header">
-                                <h2 class="entry__title">
-                                    <a href={{ url_for('blog.post_details', post_id=post.id) }}>
-                                        {{ post.title }}
+            {% for post in posts %}
+                <article class="masonry__brick entry format-standard animate-this">
+                    <div class="entry__thumb">
+                        <a href="single-standard.html" class="entry__thumb-link">
+                            <img src="{{ url_for('static', filename='blog/images/thumbs/masonry/woodcraft-600.jpg') }}"
+                                    srcset="{{ url_for('static', filename='blog/images/thumbs/masonry/woodcraft-600.jpg') }} 1x, {{ url_for('static', filename='blog/images/thumbs/masonry/woodcraft-1200.jpg') }} 2x"
+                                 alt="post-main-picture" style="width: 363px; height: 363px">
+                        </a>
+                    </div>
+                    <div class="entry__text">
+                        <div class="entry__header">
+                            <h2 class="entry__title">
+                                <a href={{ url_for('blog.post_details', post_id=post.id) }}>
+                                    {{ post.title }}
+                                </a>
+                            </h2>
+                            <div class="entry__meta">
+                                <span class="entry__meta-cat">
+                                    By
+                                    <a href="{{ url_for('blog.author_details', author_id=author.id) }}">
+                                        {{ author.first_name }} {{ author.last_name }}
                                     </a>
-                                </h2>
-                                <div class="entry__meta">
-                                    <span class="entry__meta-cat">
-                                        By
-                                        <a href="{{ url_for('blog.author_details', author_id=author.id) }}">
-                                            {{ author.first_name }} {{ author.last_name }}
-                                        </a>
-                                    </span>
-                                    <span class="entry__meta-date">
-                                        <a href="{{ url_for('blog.post_details', post_id=post.id) }}">
-                                            {{ post.created.date() }}
-                                        </a>
-                                    </span>
-                                </div>
+                                </span>
+                                <span class="entry__meta-date">
+                                    <a href="{{ url_for('blog.post_details', post_id=post.id) }}">
+                                        {{ post.created.date() }}
+                                    </a>
+                                </span>
+                            </div>
 
-                            </div>
-                            <div class="entry__excerpt">
-                                <p>
-                                    {{ post.body|truncate(200) }}
-                                </p>
-                            </div>
                         </div>
-                    </article>
-                {% endfor %}
-            </div> <!-- end masonry -->
+                        <div class="entry__excerpt">
+                            <p>
+                                {{ post.body|truncate(200) }}
+                            </p>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+        </div> <!-- end masonry -->
 
-        </div> <!-- end masonry-wrap -->
+    </div> <!-- end masonry-wrap -->
 
 {#  TODO: Enable pagination of posts  #}
 {#        <div class="row">#}
